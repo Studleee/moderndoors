@@ -1,0 +1,23 @@
+{
+	"parent": "minecraft:block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"glass": "moderndoors:block/black_aluminum_door_panel_none",
+		"edge": "moderndoors:block/black_aluminum",
+		"particle": "moderndoors:block/black_aluminum"
+	},
+	"elements": [
+		{
+			"from": [ 0, 0, 7.25 ],
+			"to": [ 16, 16, 8.75 ],
+			"faces": {
+				"north": { "uv": [ 0, 0, 16, 16 ], "texture": "#glass" },
+				"south": { "uv": [ 0, 0, 16, 16 ], "texture": "#glass" },
+				"east": { "uv": [ 7, 0, 8.5, 16 ], "texture": "#edge" },
+				"west": { "uv": [ 7, 0, 8.5, 16 ], "texture": "#edge" },
+				"up": { "uv": [ 0, 7, 16, 8.5 ], "texture": "#edge" },
+				"down": { "uv": [ 0, 7, 16, 8.5 ], "texture": "#edge" }
+			}
+		}
+	]
+}

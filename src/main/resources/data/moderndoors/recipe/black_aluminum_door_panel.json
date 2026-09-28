@@ -1,0 +1,7 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "redstone",
+	"pattern": [ "NGN", "NGN", "NDN" ],
+	"key": { "N": "minecraft:iron_nugget", "G": "minecraft:glass", "D": "minecraft:black_dye" },
+	"result": { "id": "moderndoors:black_aluminum_door_panel", "count": 2 }
+}

@@ -1,8 +1,0 @@
-{
-	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"group": "door_frame",
-	"pattern": [ "PSP" ],
-	"key": { "P": "minecraft:spruce_planks", "S": "minecraft:stick" },
-	"result": { "id": "moderndoors:spruce_door_frame", "count": 4 }
-}

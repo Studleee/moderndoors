@@ -1,0 +1,12 @@
+{
+	"variants": {
+		"axis=x,bottom=true,top=true": { "model": "moderndoors:block/black_aluminum_door_panel_tb" },
+		"axis=x,bottom=false,top=true": { "model": "moderndoors:block/black_aluminum_door_panel_t" },
+		"axis=x,bottom=true,top=false": { "model": "moderndoors:block/black_aluminum_door_panel_b" },
+		"axis=x,bottom=false,top=false": { "model": "moderndoors:block/black_aluminum_door_panel_none" },
+		"axis=z,bottom=true,top=true": { "model": "moderndoors:block/black_aluminum_door_panel_tb", "y": 90 },
+		"axis=z,bottom=false,top=true": { "model": "moderndoors:block/black_aluminum_door_panel_t", "y": 90 },
+		"axis=z,bottom=true,top=false": { "model": "moderndoors:block/black_aluminum_door_panel_b", "y": 90 },
+		"axis=z,bottom=false,top=false": { "model": "moderndoors:block/black_aluminum_door_panel_none", "y": 90 }
+	}
+}

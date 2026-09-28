@@ -3,6 +3,7 @@ package com.moderndoors.registry;
 import java.util.Set;
 
 import com.moderndoors.ModernDoors;
+import com.moderndoors.block.DoorBaseBlockEntity;
 import com.moderndoors.block.ModernDoorBlockEntity;
 
 import net.minecraft.core.Registry;
@@ -15,6 +16,12 @@ public final class ModBlockEntities {
 		BuiltInRegistries.BLOCK_ENTITY_TYPE,
 		ModernDoors.id("modern_door"),
 		new BlockEntityType<>(ModernDoorBlockEntity::new, Set.<Block>copyOf(ModBlocks.all()))
+	);
+
+	public static final BlockEntityType<DoorBaseBlockEntity> DOOR_BASE = Registry.register(
+		BuiltInRegistries.BLOCK_ENTITY_TYPE,
+		ModernDoors.id("door_base"),
+		new BlockEntityType<>(DoorBaseBlockEntity::new, Set.of(ModBlocks.DOOR_BASE))
 	);
 
 	private ModBlockEntities() {

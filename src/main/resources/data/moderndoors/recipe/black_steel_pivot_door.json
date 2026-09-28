@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "redstone",
 	"group": "modern_pivot_door",
-	"pattern": [ "FG", "FI", "FG" ],
-	"key": { "F": "moderndoors:black_steel_door_frame", "G": "minecraft:glass", "I": "minecraft:iron_ingot" },
+	"pattern": [ "DG", "FI", "FG" ],
+	"key": { "F": "minecraft:iron_ingot", "G": "minecraft:glass", "I": "minecraft:iron_ingot", "D": "minecraft:black_dye" },
 	"result": { "id": "moderndoors:black_steel_pivot_door", "count": 1 }
 }

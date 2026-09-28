@@ -8,9 +8,7 @@
 		"moderndoors:white_aluminum_folding_door",
 		"moderndoors:black_steel_sliding_door",
 		"moderndoors:white_aluminum_sliding_door",
-		"moderndoors:black_steel_door_frame",
-		"moderndoors:white_aluminum_door_frame",
-		"moderndoors:concrete_door_frame",
-		"moderndoors:dark_concrete_door_frame"
+		"moderndoors:black_aluminum_door_panel",
+		"moderndoors:black_aluminum_door_base"
 	]
 }

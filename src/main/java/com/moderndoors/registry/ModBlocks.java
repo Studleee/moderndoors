@@ -3,32 +3,31 @@ package com.moderndoors.registry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jspecify.annotations.Nullable;
 
+import com.moderndoors.block.DoorBaseBlock;
+import com.moderndoors.block.DoorPanelBlock;
 import com.moderndoors.block.ModernDoorBlock;
 import com.moderndoors.door.DoorKind;
 import com.moderndoors.door.DoorMaterial;
 import com.moderndoors.item.ModernDoorItem;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 /**
- * Every door, each kind in each material it comes in, named like {@code oak_pivot_door}, and a door frame block in
- * every material, named like {@code oak_door_frame}. Doors are fitted into a rectangle of frames.
+ * Every door, each kind in each material it comes in, named like {@code oak_pivot_door}, and the black aluminum
+ * panel and base.
  */
 public final class ModBlocks {
 	private static final Map<DoorKind, Map<DoorMaterial, ModernDoorBlock>> DOORS = new EnumMap<>(DoorKind.class);
 	private static final List<ModernDoorBlock> ALL = new ArrayList<>();
-	private static final Set<Block> FRAMES = new HashSet<>();
-
 	static {
 		for (DoorKind kind : DoorKind.values()) {
 			Map<DoorMaterial, ModernDoorBlock> byMaterial = new EnumMap<>(DoorMaterial.class);
@@ -52,16 +51,29 @@ public final class ModBlocks {
 			}
 			DOORS.put(kind, byMaterial);
 		}
-		for (DoorMaterial material : DoorMaterial.values()) {
-			FRAMES.add(Register.block(
-				material.id() + "_door_frame",
-				BlockBehaviour.Properties.of()
-					.mapColor(material.mapColor())
-					.strength(material.frameStrength())
-					.sound(material.soundType())
-			));
-		}
 	}
+
+	/** Black aluminum folding panel doors: glass panels lined up from a base post, which they all slide back into. */
+	public static final Block DOOR_PANEL = Register.block(
+		"black_aluminum_door_panel",
+		DoorPanelBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_BLACK)
+			.strength(3.0F)
+			.sound(SoundType.METAL)
+			.noOcclusion()
+			.pushReaction(PushReaction.IMMOVEABLE)
+	);
+	public static final Block DOOR_BASE = Register.block(
+		"black_aluminum_door_base",
+		DoorBaseBlock::new,
+		BlockBehaviour.Properties.of()
+			.mapColor(MapColor.COLOR_BLACK)
+			.strength(3.0F)
+			.sound(SoundType.METAL)
+			.noOcclusion()
+			.pushReaction(PushReaction.IMMOVEABLE)
+	);
 
 	private ModBlocks() {
 	}
@@ -72,10 +84,6 @@ public final class ModBlocks {
 
 	public static List<ModernDoorBlock> all() {
 		return Collections.unmodifiableList(ALL);
-	}
-
-	public static boolean isFrame(BlockState state) {
-		return FRAMES.contains(state.getBlock());
 	}
 
 	public static void initialize() {

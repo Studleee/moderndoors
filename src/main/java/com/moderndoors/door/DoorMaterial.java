@@ -68,15 +68,6 @@ public enum DoorMaterial {
 		return style == Style.WOOD ? 3.0F : 4.0F;
 	}
 
-	/** Door frames break about as fast as the block they're made from. */
-	public float frameStrength() {
-		return switch (style) {
-			case WOOD -> 2.0F;
-			case METAL -> 3.0F;
-			case CONCRETE -> 1.8F;
-		};
-	}
-
 	public SoundEvent openSound() {
 		return style == Style.WOOD ? SoundEvents.WOODEN_DOOR_OPEN : SoundEvents.IRON_DOOR_OPEN;
 	}

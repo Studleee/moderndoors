@@ -26,17 +26,6 @@
 	"block.moderndoors.pale_oak_sliding_door": "Pale Oak Sliding Glass Door",
 	"block.moderndoors.black_steel_sliding_door": "Black Steel Sliding Glass Door",
 	"block.moderndoors.white_aluminum_sliding_door": "White Aluminum Sliding Glass Door",
-	"block.moderndoors.oak_door_frame": "Oak Door Frame",
-	"block.moderndoors.spruce_door_frame": "Spruce Door Frame",
-	"block.moderndoors.birch_door_frame": "Birch Door Frame",
-	"block.moderndoors.dark_oak_door_frame": "Dark Oak Door Frame",
-	"block.moderndoors.cherry_door_frame": "Cherry Door Frame",
-	"block.moderndoors.pale_oak_door_frame": "Pale Oak Door Frame",
-	"block.moderndoors.black_steel_door_frame": "Black Steel Door Frame",
-	"block.moderndoors.white_aluminum_door_frame": "White Aluminum Door Frame",
-	"block.moderndoors.concrete_door_frame": "Concrete Door Frame",
-	"block.moderndoors.dark_concrete_door_frame": "Dark Concrete Door Frame",
-	"message.moderndoors.use_on_frame": "Build door frames around an opening, then use the door on a frame to fit it",
-	"message.moderndoors.no_opening": "No opening found: surround an empty space (up to %s wide and %s tall) with door frames on every side",
-	"message.moderndoors.too_small": "This door needs an opening at least %s wide and %s tall"
+	"block.moderndoors.black_aluminum_door_panel": "Black Aluminum Door Panel",
+	"block.moderndoors.black_aluminum_door_base": "Black Aluminum Door Base"
 }

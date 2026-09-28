@@ -1,8 +1,0 @@
-{
-	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"group": "door_frame",
-	"pattern": [ "IDI" ],
-	"key": { "I": "minecraft:iron_ingot", "D": "minecraft:white_dye" },
-	"result": { "id": "moderndoors:white_aluminum_door_frame", "count": 8 }
-}

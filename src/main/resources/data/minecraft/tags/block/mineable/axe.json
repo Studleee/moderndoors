@@ -17,12 +17,6 @@
 		"moderndoors:birch_sliding_door",
 		"moderndoors:dark_oak_sliding_door",
 		"moderndoors:cherry_sliding_door",
-		"moderndoors:pale_oak_sliding_door",
-		"moderndoors:oak_door_frame",
-		"moderndoors:spruce_door_frame",
-		"moderndoors:birch_door_frame",
-		"moderndoors:dark_oak_door_frame",
-		"moderndoors:cherry_door_frame",
-		"moderndoors:pale_oak_door_frame"
+		"moderndoors:pale_oak_sliding_door"
 	]
 }

@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "redstone",
 	"group": "modern_sliding_door",
-	"pattern": [ "FG", "FG", "FG" ],
-	"key": { "F": "moderndoors:white_aluminum_door_frame", "G": "minecraft:glass" },
+	"pattern": [ "FG", "FD", "FG" ],
+	"key": { "F": "minecraft:iron_ingot", "G": "minecraft:glass", "D": "minecraft:white_dye" },
 	"result": { "id": "moderndoors:white_aluminum_sliding_door", "count": 1 }
 }

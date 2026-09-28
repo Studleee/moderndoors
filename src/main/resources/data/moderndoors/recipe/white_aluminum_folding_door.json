@@ -2,7 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "redstone",
 	"group": "modern_folding_door",
-	"pattern": [ "FGF", "FGF", "FGF" ],
-	"key": { "F": "moderndoors:white_aluminum_door_frame", "G": "minecraft:glass" },
+	"pattern": [ "FGF", "FDF", "FGF" ],
+	"key": { "F": "minecraft:iron_ingot", "G": "minecraft:glass", "D": "minecraft:white_dye" },
 	"result": { "id": "moderndoors:white_aluminum_folding_door", "count": 1 }
 }

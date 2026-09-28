@@ -47,12 +47,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * A big modern door that fills the opening inside a door frame. Every block is a part of the same door, numbered by
+ * A big modern door, several blocks wide and tall. Every block is a part of the same door, numbered by
  * column (0 at the hinge side) and row (0 at the bottom). The hinge-side bottom block is the main part: it drops the
  * door, and its block entity remembers the door's size and draws the whole moving door. The blocks themselves are
  * invisible and only give the door its collision.
  * <p>
- * FACING is the way the player looked when fitting it. "Front" is the side they stood on.
+ * FACING is the way the player looked when placing it. "Front" is the side they stood on.
  */
 public class ModernDoorBlock extends BaseEntityBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -151,14 +151,14 @@ public class ModernDoorBlock extends BaseEntityBlock {
 		return level.getBlockEntity(mainPos(state, pos)) instanceof ModernDoorBlockEntity door ? door.width() : kind.oldWidth();
 	}
 
-	// ---- Fitting into a frame ----
+	// ---- Placing ----
 
 	@Override
 	public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
 		return null;
 	}
 
-	/** Builds the door across an opening, starting from its hinge-side bottom corner. */
+	/** Builds the door out from its hinge-side bottom corner. */
 	public void fill(Level level, BlockPos main, Direction facing, DoorHingeSide hinge, int width, int height) {
 		Direction across = across(facing, hinge);
 		boolean powered = false;

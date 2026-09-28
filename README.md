@@ -1,33 +1,34 @@
 # Modern Doors
 
-Big, smoothly animated modern doors for Minecraft 26.3 (Fabric): mansion-style pivot doors, folding glass doors that fold up like an accordion, and sliding glass doors.
+Big, smoothly animated modern doors for Minecraft 26.3 (Fabric): mansion-style pivot doors, folding glass doors that fold up like an accordion, sliding glass doors, and black aluminum panel doors that slide back into a base post.
 
-- **Any size:** build door frame blocks around an empty opening, up to 8 wide and 6 tall, then right-click a frame with a door. The door fills the opening. The corners of the frame are optional. The door hinges on whichever side of the opening you clicked nearer to.
-- **Pivot doors:** one wide panel that swings on a pivot half a block in from the hinge side. At least 1 wide.
-- **Folding glass doors:** one glass panel per block across, folding up against each other at the hinge side. At least 2 wide.
-- **Sliding glass doors:** the hinge-side half stays put and the other half glides behind it. At least 2 wide.
+- **Placing:** place a door anywhere and it's 3 tall: pivot and sliding doors are 2 wide, folding doors 3 wide. Clicking the left half of a block builds the door out to the right, and the other way around.
+- **Pivot doors:** one wide panel that swings on a pivot half a block in from the hinge side.
+- **Folding glass doors:** one glass panel per block across, folding up against each other at the hinge side.
+- **Sliding glass doors:** the hinge-side half stays put and the other half glides behind it.
 - **Materials:** oak, spruce, birch, dark oak, cherry, pale oak, black steel, and white aluminum for every kind; concrete and dark concrete for pivot doors. Wood pivot and concrete doors are solid; the rest are glass in a frame.
 - **Opening:** right-click, or power any part with redstone. Doors open away from whoever opened them.
-- **Breaking:** breaking any part takes down the whole door and drops it once (nothing in creative). Frames stay.
+- **Breaking:** breaking any part takes down the whole door and drops it once (nothing in creative).
+- **Black aluminum panel doors:** place a base post, then up to 8 panels in a straight line from it. Stack bases and panels up to 6 tall. Right-click any panel or the base (or power the base) and every panel slides back and stacks behind the post; do it again to slide them out.
 
 **Crafting**
 
 ```
-Door frames:
-  Wood:          P S P          P = planks, S = stick      makes 4
-  Metal:         I D I          I = iron ingot, D = black or white dye   makes 8
-  Concrete:      C S C          C = light gray or gray concrete           makes 4
+Doors (M = planks or concrete, F = planks or iron ingot, G = glass, I = iron ingot, D = black or white dye):
+  Wood / concrete pivot:   M M      Wood glass pivot:   F G      Metal pivot:   D G
+                           M I                          F I                     F I
+                           M M                          F G                     F G
+  Folding:   F G F        Metal folding:   F G F
+             F G F                         F D F
+             F G F                         F G F
+  Sliding:   F G          Metal sliding:   F G
+             F G                           F D
+             F G                           F G
 
-Doors (M = planks or concrete, F = black steel or white aluminum door frame, G = glass, I = iron ingot):
-  Wood / concrete pivot:   M M      Glass pivot:   F G
-                           M I                     F I
-                           M M                     F G
-  Folding:   F G F    (wood folding doors use planks as F)
-             F G F
-             F G F
-  Sliding:   F G      (wood sliding doors use planks as F)
-             F G
-             F G
+Black aluminum (N = iron nugget):
+  Panel (makes 2):   N G N        Base (makes 2):   I
+                     N G N                          D
+                     N D N                          I
 ```
 
 ## Quick start
@@ -41,11 +42,13 @@ src/main/java/com/moderndoors/
   door/DoorKind.java, DoorMaterial.java   the kinds of door and what they're made of
   block/ModernDoorBlock.java              the door's invisible blocks: opening, redstone, collision, breaking
   block/ModernDoorBlockEntity.java        the door's size and opening animation
-  item/ModernDoorItem.java                finds the framed opening and fits the door
-  registry/ModBlocks.java                 every door and frame
+  block/DoorPanelBlock.java, DoorBaseBlock.java, DoorBaseBlockEntity.java   black aluminum panel doors
+  item/ModernDoorItem.java                places a door
+  registry/ModBlocks.java                 every block
 
 src/client/java/com/moderndoors/client/
   ModernDoorRenderer.java                 draws the moving door
+  DoorBaseRenderer.java                   draws panels sliding in and out of the base
 ```
 
 All textures, models, recipes, and names come from `tools/gen-doors.ps1`. Edit the colors there and run:

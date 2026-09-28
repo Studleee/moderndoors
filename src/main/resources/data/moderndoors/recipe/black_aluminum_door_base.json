@@ -1,0 +1,7 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "redstone",
+	"pattern": [ "I", "D", "I" ],
+	"key": { "I": "minecraft:iron_ingot", "D": "minecraft:black_dye" },
+	"result": { "id": "moderndoors:black_aluminum_door_base", "count": 2 }
+}

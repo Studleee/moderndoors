@@ -84,8 +84,8 @@ $materials = @(
 	@('dark_oak', 'Dark Oak', 'wood', '3a2610', '4a3218', '5e4224', 'minecraft:dark_oak_planks'),
 	@('cherry', 'Cherry', 'wood', 'c4907f', 'e2b3a3', 'f0c7ba', 'minecraft:cherry_planks'),
 	@('pale_oak', 'Pale Oak', 'wood', 'cfc6bb', 'e8e1d9', 'f5f1ec', 'minecraft:pale_oak_planks'),
-	@('black_steel', 'Black Steel', 'metal', '161616', '262626', '3a3a3a', 'moderndoors:black_steel_door_frame'),
-	@('white_aluminum', 'White Aluminum', 'metal', 'c4c4c4', 'e6e6e6', 'ffffff', 'moderndoors:white_aluminum_door_frame'),
+	@('black_steel', 'Black Steel', 'metal', '161616', '262626', '3a3a3a', 'minecraft:iron_ingot'),
+	@('white_aluminum', 'White Aluminum', 'metal', 'c4c4c4', 'e6e6e6', 'ffffff', 'minecraft:iron_ingot'),
 	@('concrete', 'Concrete', 'concrete', '8f8f88', 'a9a9a2', 'bdbdb6', 'minecraft:light_gray_concrete'),
 	@('dark_concrete', 'Dark Concrete', 'concrete', '444447', '555558', '66666a', 'minecraft:gray_concrete')
 )
@@ -271,11 +271,21 @@ foreach ($kind in $kinds) {
 	]
 }
 "@
-		# M the material, F its frame, G glass, I an iron ingot (for the handle).
-		$recipe = switch ($kindId) {
-			'pivot' { if ($glass) { @('[ "FG", "FI", "FG" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`", `"I`": `"minecraft:iron_ingot`"") } else { @('[ "MM", "MI", "MM" ]', "`"M`": `"$ingredient`", `"I`": `"minecraft:iron_ingot`"") } }
-			'folding' { @('[ "FGF", "FGF", "FGF" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`"") }
-			'sliding' { @('[ "FG", "FG", "FG" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`"") }
+		# M the material, F its frame, G glass, I an iron ingot (for the handle). Metal frames are iron ingots, with a
+		# black or white dye (D) for the color.
+		if ($style -eq 'metal') {
+			$dye = "`"D`": `"minecraft:$(if ($mid -eq 'black_steel') { 'black' } else { 'white' })_dye`""
+			$recipe = switch ($kindId) {
+				'pivot' { @('[ "DG", "FI", "FG" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`", `"I`": `"minecraft:iron_ingot`", $dye") }
+				'folding' { @('[ "FGF", "FDF", "FGF" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`", $dye") }
+				'sliding' { @('[ "FG", "FD", "FG" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`", $dye") }
+			}
+		} else {
+			$recipe = switch ($kindId) {
+				'pivot' { if ($glass) { @('[ "FG", "FI", "FG" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`", `"I`": `"minecraft:iron_ingot`"") } else { @('[ "MM", "MI", "MM" ]', "`"M`": `"$ingredient`", `"I`": `"minecraft:iron_ingot`"") } }
+				'folding' { @('[ "FGF", "FGF", "FGF" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`"") }
+				'sliding' { @('[ "FG", "FG", "FG" ]', "`"F`": `"$ingredient`", `"G`": `"minecraft:glass`"") }
+			}
 		}
 		Write-Json (Join-Path $data "recipe\$id.json") @"
 {
@@ -301,38 +311,95 @@ foreach ($kind in $kinds) {
 	}
 }
 
-# ---- Door frames: blocks built around an opening that a door then fills ----
-# A beveled block: a dark outline, a light top-left edge, a shaded bottom-right edge, and the material inside.
-function Frame-Texture($style, $dark, $mid, $light, $path, $seed) {
-	$rand = New-Object System.Random $seed
-	$shade = Mix $dark $mid
+# ---- Black aluminum folding panel doors: panels lined up from a base post, which they slide back into ----
+$alDark = '141416'; $alMid = '1f1f22'; $alLight = '34343a'
+Noise-Texture $alDark $alMid $alLight 16 16 (Join-Path $tex 'block\black_aluminum.png') 301
+
+# The panel's glass, with frame bars down both sides, and along the top and bottom unless another panel continues
+# the column that way: variants tb (both), t, b, and none.
+foreach ($variant in @(@('tb', $true, $true), @('t', $true, $false), @('b', $false, $true), @('none', $false, $false))) {
+	$vid, $top, $bottom = $variant
 	$bmp = New-Object System.Drawing.Bitmap 16, 16, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
 	for ($y = 0; $y -lt 16; $y++) {
 		for ($x = 0; $x -lt 16; $x++) {
-			$roll = $rand.NextDouble()
-			if ($x -eq 0 -or $y -eq 0 -or $x -eq 15 -or $y -eq 15) { $hex = $dark }
-			elseif ($x -eq 1 -or $y -eq 1) { $hex = $light }
-			elseif ($x -eq 14 -or $y -eq 14) { $hex = $shade }
-			elseif ($style -eq 'wood' -and ($x -eq 5 -or $x -eq 10)) { $hex = $shade }
-			elseif ($style -eq 'metal') { $hex = if ($x + $y -eq 9 -or $x + $y -eq 10) { $light } else { $mid } }
-			elseif ($roll -lt 0.1) { $hex = $light }
-			elseif ($roll -lt 0.2) { $hex = $shade }
-			else { $hex = $mid }
+			$bar = $x -lt 2 -or $x -gt 13 -or ($top -and $y -lt 2) -or ($bottom -and $y -gt 13)
+			$edge = $x -eq 0 -or $x -eq 15 -or ($top -and $y -eq 0) -or ($bottom -and $y -eq 15)
+			$glint = $y -ge 3 -and $y -le 7 -and ($x + $y -eq 12 -or $x + $y -eq 14)
+			$hex = if ($edge) { $alDark } elseif ($bar) { $alMid } elseif ($glint) { $streakHex } else { $glassHex }
 			$bmp.SetPixel($x, $y, (Color $hex))
 		}
 	}
-	Save-Bitmap $bmp $path
+	Save-Bitmap $bmp (Join-Path $tex "block\black_aluminum_door_panel_$vid.png")
+	Write-Json (Join-Path $assets "models\block\black_aluminum_door_panel_$vid.json") @"
+{
+	"parent": "minecraft:block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"glass": "moderndoors:block/black_aluminum_door_panel_$vid",
+		"edge": "moderndoors:block/black_aluminum",
+		"particle": "moderndoors:block/black_aluminum"
+	},
+	"elements": [
+		{
+			"from": [ 0, 0, 7.25 ],
+			"to": [ 16, 16, 8.75 ],
+			"faces": {
+				"north": { "uv": [ 0, 0, 16, 16 ], "texture": "#glass" },
+				"south": { "uv": [ 0, 0, 16, 16 ], "texture": "#glass" },
+				"east": { "uv": [ 7, 0, 8.5, 16 ], "texture": "#edge" },
+				"west": { "uv": [ 7, 0, 8.5, 16 ], "texture": "#edge" },
+				"up": { "uv": [ 0, 7, 16, 8.5 ], "texture": "#edge" },
+				"down": { "uv": [ 0, 7, 16, 8.5 ], "texture": "#edge" }
+			}
+		}
+	]
 }
+"@
+}
+$panelVariants = @()
+foreach ($axis in @('x', 'z')) {
+	foreach ($top in @('true', 'false')) {
+		foreach ($bottom in @('true', 'false')) {
+			$vid = if ($top -eq 'true' -and $bottom -eq 'true') { 'tb' } elseif ($top -eq 'true') { 't' } elseif ($bottom -eq 'true') { 'b' } else { 'none' }
+			$rot = if ($axis -eq 'z') { ', "y": 90' } else { '' }
+			$panelVariants += "`t`t`"axis=$axis,bottom=$bottom,top=$top`": { `"model`": `"moderndoors:block/black_aluminum_door_panel_$vid`"$rot }"
+		}
+	}
+}
+Write-Json (Join-Path $assets 'blockstates\black_aluminum_door_panel.json') "{`n`t`"variants`": {`n$($panelVariants -join ",`n")`n`t}`n}"
+Write-Json (Join-Path $assets 'items\black_aluminum_door_panel.json') '{ "model": { "type": "minecraft:model", "model": "moderndoors:block/black_aluminum_door_panel_tb" } }'
 
-foreach ($m in $materials) {
-	$mid, $mname, $style, $dark, $midHex, $light, $ingredient = $m
-	$id = "${mid}_door_frame"
-	$lang["block.moderndoors.$id"] = "$mname Door Frame"
-	if ($style -eq 'wood') { $axe += "moderndoors:$id" } else { $pickaxe += "moderndoors:$id" }
-	Frame-Texture $style $dark $midHex $light (Join-Path $tex "block\$id.png") ($seed++)
-	Write-Json (Join-Path $assets "models\block\$id.json") "{ `"parent`": `"minecraft:block/cube_all`", `"textures`": { `"all`": `"moderndoors:block/$id`" } }"
-	Write-Json (Join-Path $assets "blockstates\$id.json") "{ `"variants`": { `"`": { `"model`": `"moderndoors:block/$id`" } } }"
-	Write-Json (Join-Path $assets "items\$id.json") "{ `"model`": { `"type`": `"minecraft:model`", `"model`": `"moderndoors:block/$id`" } }"
+Write-Json (Join-Path $assets 'models\block\black_aluminum_door_base.json') @"
+{
+	"parent": "minecraft:block/block",
+	"textures": { "post": "moderndoors:block/black_aluminum", "particle": "moderndoors:block/black_aluminum" },
+	"elements": [
+		{
+			"from": [ 6, 0, 6 ],
+			"to": [ 10, 16, 10 ],
+			"faces": {
+				"north": { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+				"south": { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+				"east": { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+				"west": { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+				"up": { "uv": [ 6, 6, 10, 10 ], "texture": "#post" },
+				"down": { "uv": [ 6, 6, 10, 10 ], "texture": "#post" }
+			}
+		}
+	]
+}
+"@
+Write-Json (Join-Path $assets 'blockstates\black_aluminum_door_base.json') '{ "variants": { "": { "model": "moderndoors:block/black_aluminum_door_base" } } }'
+Write-Json (Join-Path $assets 'items\black_aluminum_door_base.json') '{ "model": { "type": "minecraft:model", "model": "moderndoors:block/black_aluminum_door_base" } }'
+
+# Panel: iron nuggets around glass, with black dye, make 2. Base: two iron ingots and black dye make 2.
+foreach ($piece in @(
+	@('black_aluminum_door_panel', 'Black Aluminum Door Panel', '[ "NGN", "NGN", "NDN" ]', '"N": "minecraft:iron_nugget", "G": "minecraft:glass", "D": "minecraft:black_dye"', 'minecraft:glass'),
+	@('black_aluminum_door_base', 'Black Aluminum Door Base', '[ "I", "D", "I" ]', '"I": "minecraft:iron_ingot", "D": "minecraft:black_dye"', 'minecraft:iron_ingot')
+)) {
+	$id, $name, $pattern, $key, $unlock = $piece
+	$lang["block.moderndoors.$id"] = $name
+	$pickaxe += "moderndoors:$id"
 	Write-Json (Join-Path $data "loot_table\blocks\$id.json") @"
 {
 	"type": "minecraft:block",
@@ -345,27 +412,20 @@ foreach ($m in $materials) {
 	]
 }
 "@
-	# Wood: planks and a stick make 4. Metal: two iron ingots and a dye make 8. Concrete: two concrete and a stick make 4.
-	$frameRecipe = switch ($style) {
-		'wood' { @('[ "PSP" ]', "`"P`": `"$ingredient`", `"S`": `"minecraft:stick`"", 4, $ingredient) }
-		'metal' { @('[ "IDI" ]', "`"I`": `"minecraft:iron_ingot`", `"D`": `"minecraft:$(if ($mid -eq 'black_steel') { 'black' } else { 'white' })_dye`"", 8, 'minecraft:iron_ingot') }
-		'concrete' { @('[ "CSC" ]', "`"C`": `"$ingredient`", `"S`": `"minecraft:stick`"", 4, $ingredient) }
-	}
 	Write-Json (Join-Path $data "recipe\$id.json") @"
 {
 	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"group": "door_frame",
-	"pattern": $($frameRecipe[0]),
-	"key": { $($frameRecipe[1]) },
-	"result": { "id": "moderndoors:$id", "count": $($frameRecipe[2]) }
+	"category": "redstone",
+	"pattern": $pattern,
+	"key": { $key },
+	"result": { "id": "moderndoors:$id", "count": 2 }
 }
 "@
-	Write-Json (Join-Path $data "advancement\recipes\building_blocks\$id.json") @"
+	Write-Json (Join-Path $data "advancement\recipes\redstone\$id.json") @"
 {
 	"parent": "minecraft:recipes/root",
 	"criteria": {
-		"has_material": { "conditions": { "items": [ { "items": "$($frameRecipe[3])" } ] }, "trigger": "minecraft:inventory_changed" },
+		"has_material": { "conditions": { "items": [ { "items": "$unlock" } ] }, "trigger": "minecraft:inventory_changed" },
 		"has_the_recipe": { "conditions": { "recipes": "moderndoors:$id" }, "trigger": "minecraft:recipe_unlocked" }
 	},
 	"requirements": [ [ "has_the_recipe", "has_material" ] ],
@@ -373,10 +433,6 @@ foreach ($m in $materials) {
 }
 "@
 }
-
-$lang['message.moderndoors.use_on_frame'] = 'Build door frames around an opening, then use the door on a frame to fit it'
-$lang['message.moderndoors.no_opening'] = 'No opening found: surround an empty space (up to %s wide and %s tall) with door frames on every side'
-$lang['message.moderndoors.too_small'] = 'This door needs an opening at least %s wide and %s tall'
 
 # ---- Tool tags, names, and the mod icon ----
 function Tag-List($ids) { return ($ids | ForEach-Object { "`t`t`"$_`"" }) -join ",`n" }
@@ -388,4 +444,4 @@ Write-Json (Join-Path $assets 'lang\en_us.json') "{`n$langLines`n}"
 
 Draw (Icon 'pivot') @{ 'F' = '161616'; 'M' = 'a0cfe8f2'; 'L' = 'd0f0fbff'; 'H' = 'c9a24a' } (Join-Path $assets 'icon.png') 8
 
-Write-Host "Generated $($axe.Count + $pickaxe.Count - $materials.Count) doors and $($materials.Count) door frames."
+Write-Host "Generated $($axe.Count + $pickaxe.Count - 2) doors and the black aluminum panel and base."
