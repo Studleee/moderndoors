@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "moderndoors",
+	"version": "${version}",
+	"name": "Modern Doors",
+	"description": "Big, smoothly animated modern doors: pivot doors, folding glass doors, and sliding glass doors in wood, black steel, white aluminum, and concrete.",
+	"authors": [
+		"Jacob"
+	],
+	"license": "All-Rights-Reserved",
+	"icon": "assets/moderndoors/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.moderndoors.ModernDoors"
+		],
+		"client": [
+			"com.moderndoors.client.ModernDoorsClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

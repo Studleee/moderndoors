@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"group": "door_frame",
+	"pattern": [ "CSC" ],
+	"key": { "C": "minecraft:light_gray_concrete", "S": "minecraft:stick" },
+	"result": { "id": "moderndoors:concrete_door_frame", "count": 4 }
+}

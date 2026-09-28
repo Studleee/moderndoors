@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1,
+			"conditions": [
+				{ "condition": "minecraft:survives_explosion" },
+				{ "condition": "minecraft:block_state_property", "block": "moderndoors:black_steel_folding_door", "properties": { "column": "0", "row": "0" } }
+			],
+			"entries": [ { "type": "minecraft:item", "name": "moderndoors:black_steel_folding_door" } ]
+		}
+	]
+}

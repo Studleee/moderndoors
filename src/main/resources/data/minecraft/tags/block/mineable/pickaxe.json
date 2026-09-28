@@ -1,0 +1,16 @@
+{
+	"values": [
+		"moderndoors:black_steel_pivot_door",
+		"moderndoors:white_aluminum_pivot_door",
+		"moderndoors:concrete_pivot_door",
+		"moderndoors:dark_concrete_pivot_door",
+		"moderndoors:black_steel_folding_door",
+		"moderndoors:white_aluminum_folding_door",
+		"moderndoors:black_steel_sliding_door",
+		"moderndoors:white_aluminum_sliding_door",
+		"moderndoors:black_steel_door_frame",
+		"moderndoors:white_aluminum_door_frame",
+		"moderndoors:concrete_door_frame",
+		"moderndoors:dark_concrete_door_frame"
+	]
+}

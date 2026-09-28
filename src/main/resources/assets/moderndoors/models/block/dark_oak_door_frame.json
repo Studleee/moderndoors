@@ -1,0 +1,1 @@
+{ "parent": "minecraft:block/cube_all", "textures": { "all": "moderndoors:block/dark_oak_door_frame" } }

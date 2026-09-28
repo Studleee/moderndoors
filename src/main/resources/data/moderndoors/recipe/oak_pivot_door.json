@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "redstone",
+	"group": "modern_pivot_door",
+	"pattern": [ "MM", "MI", "MM" ],
+	"key": { "M": "minecraft:oak_planks", "I": "minecraft:iron_ingot" },
+	"result": { "id": "moderndoors:oak_pivot_door", "count": 1 }
+}

@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "redstone",
+	"group": "modern_sliding_door",
+	"pattern": [ "FG", "FG", "FG" ],
+	"key": { "F": "minecraft:birch_planks", "G": "minecraft:glass" },
+	"result": { "id": "moderndoors:birch_sliding_door", "count": 1 }
+}

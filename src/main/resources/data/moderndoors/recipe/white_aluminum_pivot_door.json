@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "redstone",
+	"group": "modern_pivot_door",
+	"pattern": [ "FG", "FI", "FG" ],
+	"key": { "F": "moderndoors:white_aluminum_door_frame", "G": "minecraft:glass", "I": "minecraft:iron_ingot" },
+	"result": { "id": "moderndoors:white_aluminum_pivot_door", "count": 1 }
+}

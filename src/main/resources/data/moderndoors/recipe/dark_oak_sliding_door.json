@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "redstone",
+	"group": "modern_sliding_door",
+	"pattern": [ "FG", "FG", "FG" ],
+	"key": { "F": "minecraft:dark_oak_planks", "G": "minecraft:glass" },
+	"result": { "id": "moderndoors:dark_oak_sliding_door", "count": 1 }
+}
